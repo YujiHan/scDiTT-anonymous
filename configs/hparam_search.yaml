@@ -1,0 +1,49 @@
+# ============================================================================
+# Hyperparameter search behind the two per-dataset values in dataset/*.yaml.
+#
+# This file is a record, not an input: nothing reads it at run time. It states
+# what was swept, what was not, how many runs that amounts to, and what the
+# winners were chosen by, so that the two values that differ across datasets can
+# be audited rather than taken on trust. It matches the "Per-Dataset Settings"
+# subsection of the Training Details appendix.
+# ============================================================================
+
+# Only these two quantities are set per dataset. Everything else -- architecture,
+# optimiser, schedule, batch size, EMA decay, masking curriculum, coupling and
+# sampling hyperparameters -- is shared unchanged across all five datasets.
+tuned:
+  peak_lr:
+    grid: [5.0e-5, 1.0e-4, 2.0e-4, 4.0e-4]
+    swept_with: {N: 256}          # N held at its default while the rate is swept
+    selected: {ZB: 1.0e-4, DR: 4.0e-4, SC: 1.0e-4, GA: 1.0e-4, MA: 1.0e-4}
+  N:                              # cells sampled per stage in a training example
+    grid: [128, 256, 384]
+    swept_with: peak_lr_selected  # second coordinate, at the rate chosen above
+    omitted:
+      SC: 384                     # 19 stages x 384 cells exhausts a single 32 GB card
+    selected: {ZB: 128, DR: 256, SC: 256, GA: 256, MA: 256}
+
+protocol:
+  strategy: coordinate descent    # peak_lr first, then N -- not a full grid
+  runs_per_dataset: 6             # 4 (peak_lr) + 3 (N) - 1 shared point
+  runs_on_SC: 5                   # one fewer, N=384 omitted
+  total_runs: 29
+  scored_on:
+    task: interpolation           # the search never touched extrapolation
+    seed: 42                      # a single seed
+    metric: mean W2 over the held-out stages
+  reused_without_further_search:
+    - extrapolation (the fixed split)
+    - extrapolation_steps (the horizon sweep, all six horizons)
+
+# Fixed at the values in default.yaml for every dataset; never swept.
+not_swept:
+  - batch_size (16)
+  - total_steps (40000)
+  - warmup_steps (1000) and the cosine decay to 0.1x peak
+  - weight_decay (0.01), grad_clip (1.0), AdamW betas (0.9, 0.95)
+  - ema_decay (0.9999)
+  - masking curriculum weights
+  - coupling epsilon (0.05) and max_cells (2000)
+  - inference num_steps (20), cfg_weight (3.0), num_repeats (12), N_eval (256)
+  - VAE architecture and its optimisation

@@ -1,0 +1,17 @@
+dataset:
+  name: MA
+  h5ad_path: Data/MA/ma_forecast.h5ad
+  latents_path: results/vae_checkpoints/MA_latents.h5ad
+  vae_ckpt_path: results/vae_checkpoints/MA.pt
+  time_key: tp
+  # See configs/dataset/zb.yaml for what this field does. MA is evenly sampled,
+  # so here the real time and the stage index differ only by a constant offset.
+  real_time_key: pcw_real   # post-conception week: 4 .. 11
+  T: 8
+  n_hvg: 2000
+  is_sparse: true
+
+
+training:
+  batch_size: 16
+  peak_lr: 1.0e-4

@@ -1,0 +1,57 @@
+seed: 0
+output_dir: null
+dataset: null
+task: null
+
+data:
+  N: 256
+  num_workers: 4
+  length: 100000
+  length_override: null
+
+model:
+  D_latent: 64
+  D_model: 384
+  num_blocks: 12
+  num_heads: 6
+
+training:
+  total_steps: 40000
+  batch_size: 16
+  peak_lr: 1.0e-4
+  warmup_steps: 1000
+  min_lr_ratio: 0.1
+  weight_decay: 0.01
+  grad_clip: 1.0
+  ema_decay: 0.9999
+  val_every: 1000
+  use_bf16: true
+  val_num_repeats: 4
+  probe_batches: 8
+  # No early stopping: every run consumes the full total_steps budget on every
+  # dataset and task, which is what the Training Details appendix reports.
+
+diffusion:
+  num_train_timesteps: 1000
+  use_min_snr: false
+  min_snr_gamma: 5.0
+
+coupling:
+  epsilon: 0.05
+  max_cells: 2000
+  normalize_cost: true
+
+vae:
+  latent_dim: 64
+  hidden: [512, 256]
+  epochs: 150
+  lr: 1.0e-3
+  batch_size: 256
+  beta: 0.1
+
+inference:
+  num_steps: 20
+  cfg_weight: 3.0
+  num_repeats: 12
+  N_eval: 256
+  eval_seed: 0

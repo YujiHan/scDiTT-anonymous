@@ -1,0 +1,16 @@
+dataset:
+  name: GA
+  h5ad_path: Data/GA/garcia_alonso.h5ad
+  latents_path: results/vae_checkpoints/GA_latents.h5ad
+  vae_ckpt_path: results/vae_checkpoints/GA.pt
+  time_key: tp
+  # See configs/dataset/zb.yaml for what this field does.
+  real_time_key: pcw_real   # post-conception week; only 11 of the weeks between
+                            # 9 and 21 are sampled, hence irregular
+  T: 11
+  n_hvg: 2000
+  is_sparse: true
+
+training:
+  batch_size: 16
+  peak_lr: 1.0e-4

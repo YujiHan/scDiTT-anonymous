@@ -1,0 +1,15 @@
+dataset:
+  name: DR
+  h5ad_path: Data/DR/DR_Calderon_2022_hvg_annotated_subsampled.h5ad
+  latents_path: results/vae_checkpoints/DR_latents.h5ad
+  vae_ckpt_path: results/vae_checkpoints/DR.pt
+  time_key: tp
+  # See configs/dataset/zb.yaml for what this field does.
+  real_time_key: hrs_real   # collection-window midpoint in hours: 1 2 3 5 6 8 10 12 14 16 18
+  T: 11
+  n_hvg: 2000
+  is_sparse: true
+
+training:
+  batch_size: 16
+  peak_lr: 4.0e-4

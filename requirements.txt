@@ -1,0 +1,26 @@
+# --- Deep learning ---
+torch>=2.1
+
+# --- Single-cell ---
+scanpy>=1.9
+anndata>=0.10
+
+# --- OT / metrics ---
+POT>=0.9
+geomloss
+
+# --- Numerics / scientific computing ---
+numpy
+scipy
+scikit-learn
+pandas
+joblib
+
+# --- Plotting and dimensionality reduction (needed for Fig. 3-5 and Fig. S1-S9) ---
+matplotlib
+umap-learn
+
+# --- Other ---
+pyyaml
+tensorboard          # backend for torch.utils.tensorboard (src/utils/logging.py)
+pytest

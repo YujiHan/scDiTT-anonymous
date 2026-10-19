@@ -1,0 +1,23 @@
+dataset:
+  name: ZB
+  h5ad_path: Data/ZB/zebrafish_hvg_annotated.h5ad
+  latents_path: results/vae_checkpoints/ZB_latents.h5ad
+  vae_ckpt_path: results/vae_checkpoints/ZB.pt
+  time_key: tp
+  # Which obs column supplies the values fed to the continuous-time encoding
+  # PE(t_k). It names the *physical* acquisition time of each stage, so the
+  # encoding carries the true sampling intervals rather than the uniform 0..T-1
+  # grid that `time_key` would give. Setting it to null falls back on that grid.
+  # ZB is the most unevenly sampled of the five courses: the first six stages
+  # span 2.7 h and the last six span 6 h.
+  real_time_key: HPF        # hours post fertilisation: 3.3 3.8 4.3 4.7 5.3 6 7 ... 12
+  T: 12
+  n_hvg: 2000
+  is_sparse: false
+
+training:
+  batch_size: 16
+  peak_lr: 1.0e-4
+
+data:
+  N: 128

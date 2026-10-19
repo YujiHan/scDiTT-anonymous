@@ -1,0 +1,16 @@
+dataset:
+  name: SC
+  h5ad_path: Data/SC/schiebinger_2019_preprocess_subset.h5ad
+  latents_path: results/vae_checkpoints/SC_latents.h5ad
+  vae_ckpt_path: results/vae_checkpoints/SC.pt
+  time_key: tp
+  # See configs/dataset/zb.yaml for what this field does. SC is evenly sampled,
+  # so here the real time and the stage index differ only by a constant offset.
+  real_time_key: day        # reprogramming day: 0 .. 18
+  T: 19
+  n_hvg: 2000
+  is_sparse: true
+
+training:
+  batch_size: 16
+  peak_lr: 1.0e-4
